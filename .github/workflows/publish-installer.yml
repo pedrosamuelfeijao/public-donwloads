@@ -1,0 +1,152 @@
+name: Publicar instalador
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "Aplicativo (Hub e Compras usam o mesmo Lorde Agent)"
+        required: true
+        type: choice
+        options:
+          - cultoflow
+          - hub
+          - compras
+      channel:
+        description: "Preview para testes; Stable apenas para versão oficial"
+        required: true
+        type: choice
+        options:
+          - preview
+          - stable
+      source_tag:
+        description: "Tag EXATA da release privada (ex.: agent-v0.5.2-build-34)"
+        required: true
+        type: string
+      version:
+        description: "Versão do executável sem v (ex.: 0.5.2, 0.4.0rc20)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# Um único escritor evita perda de manifestos entre aplicativos.
+concurrency:
+  group: public-installers
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar origem e escolher instalador
+        shell: bash
+        env:
+          APP: ${{ inputs.app }}
+          CHANNEL: ${{ inputs.channel }}
+          SOURCE_TAG: ${{ inputs.source_tag }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_TAG" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{1,100}$ ]] || { echo 'Tag inválida'; exit 1; }
+          [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+){1,3}((a|b|rc|dev)[0-9]+)?$ ]] || { echo 'Versão inválida'; exit 1; }
+          case "$APP" in
+            cultoflow)
+              echo 'SOURCE_REPO=pedrosamuelfeijao/planejador-de-cultos' >> "$GITHUB_ENV"
+              echo 'SOURCE_PATTERN=CultoFlowSetup.exe' >> "$GITHUB_ENV"
+              echo "PUBLIC_FILENAME=CultoFlowSetup-$VERSION.exe" >> "$GITHUB_ENV"
+              ;;
+            hub|compras)
+              echo 'SOURCE_REPO=pedrosamuelfeijao/lorde-agent' >> "$GITHUB_ENV"
+              echo 'SOURCE_PATTERN=LordeAgentSetup-*.exe' >> "$GITHUB_ENV"
+              echo "PUBLIC_FILENAME=LordeAgentSetup-$VERSION.exe" >> "$GITHUB_ENV"
+              ;;
+            *) echo 'App desconhecido'; exit 1;;
+          esac
+          echo "PUBLIC_RELEASE_TAG=$APP-$CHANNEL-v$VERSION" >> "$GITHUB_ENV"
+
+      - name: Baixar instalador da release privada
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.PRIVATE_RELEASE_READ_TOKEN }}
+          CHANNEL: ${{ inputs.channel }}
+          VERSION: ${{ inputs.version }}
+          SOURCE_TAG: ${{ inputs.source_tag }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo 'Configure o secret PRIVATE_RELEASE_READ_TOKEN (somente leitura dos repositórios privados).'
+            exit 1
+          fi
+          if [[ "$CHANNEL" == "stable" ]]; then
+            [[ ! "$VERSION" =~ (dev|a|b|rc)[0-9]+$ ]] || { echo 'Versão candidata não pode ser estável'; exit 1; }
+            prerelease=$(gh release view "$SOURCE_TAG" -R "$SOURCE_REPO" --json isPrerelease --jq .isPrerelease)
+            [[ "$prerelease" == "false" ]] || { echo 'Origem ainda é pré-release: publique em preview'; exit 1; }
+          fi
+          mkdir -p source publish
+          gh release download "$SOURCE_TAG" -R "$SOURCE_REPO" -p "$SOURCE_PATTERN" -D source
+          mapfile -t found < <(find source -maxdepth 1 -name '*.exe' -type f)
+          [[ ${#found[@]} -eq 1 ]] || { echo 'Era esperado exatamente um instalador EXE'; exit 1; }
+          echo "SOURCE_INSTALLER=${found[0]}" >> "$GITHUB_ENV"
+          if [[ "${found[0]}" != "source/CultoFlowSetup.exe" && "$SOURCE_REPO" == *"planejador-de-cultos" ]]; then
+            echo 'Nome CultoFlow inesperado'; exit 1
+          fi
+          if [[ "$SOURCE_REPO" == *"lorde-agent" && "${found[0]##*/}" != "LordeAgentSetup-$VERSION.exe" ]]; then
+            echo 'O nome do Lorde Agent não corresponde à versão solicitada'; exit 1
+          fi
+
+      - name: Conferir checksums originais do CultoFlow
+        if: ${{ inputs.app == 'cultoflow' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.PRIVATE_RELEASE_READ_TOKEN }}
+          SOURCE_TAG: ${{ inputs.source_tag }}
+        run: |
+          set -euo pipefail
+          gh release download "$SOURCE_TAG" -R "$SOURCE_REPO" -p SHA256SUMS.txt -D source
+          (cd source && sha256sum --check --ignore-missing SHA256SUMS.txt)
+          grep -q 'CultoFlowSetup.exe' source/SHA256SUMS.txt || { echo 'Instalador não está no SHA256SUMS original'; exit 1; }
+
+      - name: Gerar manifesto com integridade e versão crescente
+        shell: bash
+        env:
+          APP: ${{ inputs.app }}
+          CHANNEL: ${{ inputs.channel }}
+          VERSION: ${{ inputs.version }}
+          SOURCE_TAG: ${{ inputs.source_tag }}
+        run: |
+          set -euo pipefail
+          python3 scripts/generate_manifest.py             --app "$APP" --channel "$CHANNEL" --version "$VERSION"             --source-tag "$SOURCE_TAG" --source-installer "$SOURCE_INSTALLER"             --public-installer "publish/$PUBLIC_FILENAME"
+
+      - name: Criar Release pública (sem código-fonte privado)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APP: ${{ inputs.app }}
+          CHANNEL: ${{ inputs.channel }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          flags=()
+          if [[ "$CHANNEL" == "preview" ]]; then flags+=(--prerelease); fi
+          if gh release view "$PUBLIC_RELEASE_TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Tag pública já existe. Por segurança, não substituímos executáveis.'
+            exit 1
+          fi
+          gh release create "$PUBLIC_RELEASE_TAG" "publish/$PUBLIC_FILENAME"             -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA"             --title "$APP $VERSION ($CHANNEL)"             --notes "Instalador Windows de $APP, canal $CHANNEL. SHA-256 e tamanho disponíveis no manifesto correspondente."             "${flags[@]}"
+
+      - name: Publicar manifesto de atualizações na main
+        shell: bash
+        env:
+          APP: ${{ inputs.app }}
+          CHANNEL: ${{ inputs.channel }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "updates/$APP/$CHANNEL.json"
+          git commit -m "publish: $APP $CHANNEL $VERSION"
+          git push origin HEAD:main
