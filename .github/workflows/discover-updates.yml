@@ -1,0 +1,75 @@
+name: Procurar novas versões privadas
+on:
+  schedule:
+    - cron: "14 0,6,12,18 * * *"    # CultoFlow, a cada 6 horas
+    - cron: "14 1,7,13,19 * * *"    # Lorde Hub
+    - cron: "14 2,8,14,20 * * *"   # Lorde Compras
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "Buscar atualizações deste aplicativo"
+        type: choice
+        required: true
+        options: [cultoflow, hub, compras]
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descobrir origem por aplicativo
+        env:
+          REQUESTED: ${{ inputs.app }}
+          SCHEDULE: ${{ github.event.schedule }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "$REQUESTED" ]]; then
+            app="$REQUESTED"
+          else
+            case "$SCHEDULE" in
+              "14 0,6,12,18 * * *") app=cultoflow ;;
+              "14 1,7,13,19 * * *") app=hub ;;
+              "14 2,8,14,20 * * *") app=compras ;;
+              *) echo "Agendamento não reconhecido"; exit 1 ;;
+            esac
+          fi
+          if [[ "$app" == cultoflow ]]; then repo=pedrosamuelfeijao/planejador-de-cultos
+          else repo=pedrosamuelfeijao/lorde-agent; fi
+          echo "APP=$app" >> "$GITHUB_ENV"
+          echo "SOURCE_REPO=$repo" >> "$GITHUB_ENV"
+
+      - name: Ler releases privadas sem imprimir tokens
+        shell: bash
+        env:
+          PRIVATE_TOKEN: ${{ secrets.PRIVATE_RELEASE_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ -n "$PRIVATE_TOKEN" ]] || { echo "Secret PRIVATE_RELEASE_READ_TOKEN ausente"; exit 1; }
+          GH_TOKEN="$PRIVATE_TOKEN" gh release list -R "$SOURCE_REPO"             --json tagName,isPrerelease,publishedAt --limit 100 > private-releases.json
+
+      - name: Disparar apenas novas versões
+        shell: bash
+        env:
+          PUBLIC_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for channel in stable preview; do
+            manifest="updates/$APP/$channel.json"
+            result=$(python3 scripts/find_latest_release.py               --app "$APP" --channel "$channel" --manifest "$manifest" < private-releases.json)
+            if [[ -z "$result" ]]; then
+              echo "$APP/$channel: sem atualizações"
+              continue
+            fi
+            IFS=$'\t' read -r tag version <<< "$result"
+            echo "$APP/$channel: agendando publicação da versão $version"
+            GH_TOKEN="$PUBLIC_TOKEN" gh workflow run publish-installer.yml -R "$GITHUB_REPOSITORY"               --ref main -f app="$APP" -f channel="$channel"               -f source_tag="$tag" -f version="$version"
+            # Execuções não disputam mesma branch: caso seja necessário publicar dois
+            # canais, o próximo agendamento será suficiente para um manifesto ainda pendente.
+            break
+          done
