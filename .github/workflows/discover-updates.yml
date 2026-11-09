@@ -4,6 +4,10 @@ on:
     - cron: "14 0,6,12,18 * * *"    # CultoFlow, a cada 6 horas
     - cron: "14 1,7,13,19 * * *"    # Lorde Hub
     - cron: "14 2,8,14,20 * * *"   # Lorde Compras
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/discover-updates.yml'
   workflow_dispatch:
     inputs:
       app:
@@ -29,7 +33,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -n "$REQUESTED" ]]; then
+          if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+            app=cultoflow  # CI smoke test of the detection path, no version bump needed
+          elif [[ -n "$REQUESTED" ]]; then
             app="$REQUESTED"
           else
             case "$SCHEDULE" in
