@@ -2,5 +2,14 @@
   "schema_version": 1,
   "app_id": "compras",
   "channel": "stable",
-  "available": false
+  "available": true,
+  "version": "0.3.7",
+  "release_tag": "compras-stable-v0.3.7",
+  "published_at": "2026-11-09T23:27:09+00:00",
+  "installer": {
+    "name": "LordeAgentSetup-0.3.7.exe",
+    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/compras-stable-v0.3.7/LordeAgentSetup-0.3.7.exe",
+    "sha256": "5279806324ca4c9151c0c13927f6e27934054f165dacad4e44625ad8d36b8c60",
+    "size_bytes": 64989174
+  }
 }
