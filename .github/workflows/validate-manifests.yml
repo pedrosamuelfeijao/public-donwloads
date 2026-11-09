@@ -1,0 +1,39 @@
+name: Validar manifestos
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "updates/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Testar publicação, hashes e regressões
+        run: python -m unittest discover -s scripts -p 'test_*.py' -v
+      - name: Conferir estrutura dos canais
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          for app in ('hub','compras','cultoflow'):
+              for channel in ('stable','preview'):
+                  d=json.loads((Path('updates')/app/(channel+'.json')).read_text())
+                  assert d['schema_version']==1 and d['app_id']==app and d['channel']==channel
+                  if d['available']:
+                      installer=d['installer']
+                      assert len(installer['sha256'])==64
+                      assert installer['url'].startswith(
+                          'https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/')
+          print('Manifestos válidos')
+          PY
