@@ -1,0 +1,22 @@
+name: Iniciar publicação CultoFlow (uma vez)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bootstrap-cultoflow.yml'
+permissions:
+  actions: write
+  contents: read
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Iniciar publicação com campos corretos
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run publish-installer.yml --repo ${{ github.repository }} --ref main \
+            -f app=cultoflow \
+            -f channel=preview \
+            -f source_tag=agent-v0.5.2-build-34 \
+            -f version=0.5.2
