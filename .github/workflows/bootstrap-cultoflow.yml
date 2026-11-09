@@ -1,4 +1,4 @@
-name: Iniciar publicação CultoFlow (uma vez)
+name: Validar busca automática de versões (uma vez)
 on:
   push:
     branches: [main]
@@ -11,12 +11,7 @@ jobs:
   dispatch:
     runs-on: ubuntu-latest
     steps:
-      - name: Iniciar publicação com campos corretos
+      - name: Executar descoberta CultoFlow agora
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run publish-installer.yml --repo ${{ github.repository }} --ref main \
-            -f app=cultoflow \
-            -f channel=preview \
-            -f source_tag=agent-v0.5.3-build-38 \
-            -f version=0.5.3
+        run: gh workflow run discover-updates.yml --repo ${{ github.repository }} --ref main -f app=cultoflow
