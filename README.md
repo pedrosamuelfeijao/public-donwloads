@@ -1,48 +1,44 @@
-# Downloads públicos — Lorde & CultoFlow
+# Central pública de downloads — Lorde & CultoFlow
 
-Este repositório público distribui **somente instaladores Windows, hashes SHA-256 e manifestos de versões**. O código-fonte, os bancos, as chaves de serviço e os repositórios de desenvolvimento continuam privados.
+Instaladores oficiais de Windows publicados **sem exigir login no GitHub**. Os repositórios com código-fonte, dados, segredos e pipelines de desenvolvimento continuam privados.
 
-## Canais
+## Baixar agora
 
-| Produto | Agente Windows | Manifesto estável | Manifesto de teste |
+| Aplicativo | Download direto (canal de testes) | Versão | Tamanho |
 | --- | --- | --- | --- |
-| Lorde Hub | Lorde Agent | [Hub estável](updates/hub/stable.json) | [Hub teste](updates/hub/preview.json) |
-| Lorde Compras | Lorde Agent (impressoras/peças) | [Compras estável](updates/compras/stable.json) | [Compras teste](updates/compras/preview.json) |
-| CultoFlow | CultoFlow Agent (Holyrics) | [CultoFlow estável](updates/cultoflow/stable.json) | [CultoFlow teste](updates/cultoflow/preview.json) |
+| **Lorde Hub** | [Baixar Lorde Agent para Hub](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/hub-preview-v0.4.0rc20/LordeAgentSetup-0.4.0rc20.exe) | 0.4.0rc20 | ~100 MB |
+| **Lorde Compras** | [Baixar Lorde Agent para Compras](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/compras-preview-v0.4.0rc20/LordeAgentSetup-0.4.0rc20.exe) | 0.4.0rc20 | ~100 MB |
+| **CultoFlow** | [Baixar CultoFlow Agent](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/cultoflow-preview-v0.5.3/CultoFlowSetup-0.5.3.exe) | 0.5.3 | ~46 MB |
 
-**Importante:** neste estágio o Lorde Hub e o Lorde Compras compartilham o mesmo programa **Lorde Agent**, mas cada painel poderá apresentar um botão independente de download e seu respectivo canal de atualização.
+Hub e Compras usam **o mesmo Lorde Agent** com diferentes recursos e integrações, mas possuem canais de distribuição separados. Esses são builds de testes; não são releases estáveis definitivas. Consulte também [todas as Releases](https://github.com/pedrosamuelfeijao/public-donwloads/releases).
 
-## Downloads sem login
+## Links permanentes para sites e atualizadores
 
-Acesse a seção [**Releases**](https://github.com/pedrosamuelfeijao/public-donwloads/releases). Depois que a primeira publicação ocorrer, qualquer pessoa poderá baixar o `.exe` sem entrar no GitHub.
+Não use `/releases/latest`, pois um mesmo repositório contém vários produtos. Para sempre obter a versão correta, consulte os manifestos independentes:
 
-Para links permanentes de aplicativos, o painel deve consultar `updates/<produto>/stable.json` (ou `preview.json` para testes) e usar `installer.url`. **Não use** `/releases/latest`, pois esse endereço é único para o repositório, enquanto aqui existem três aplicativos.
+| Produto | Canal de testes | Canal estável |
+| --- | --- | --- |
+| Hub | [Manifesto Hub](updates/hub/preview.json) | [Estável](updates/hub/stable.json) |
+| Compras | [Manifesto Compras](updates/compras/preview.json) | [Estável](updates/compras/stable.json) |
+| CultoFlow | [Manifesto CultoFlow](updates/cultoflow/preview.json) | [Estável](updates/cultoflow/stable.json) |
 
-## Publicar um instalador privado no repositório público
+O manifesto traz a URL pública, versão, tamanho e SHA-256. Um cliente deve confirmar `app_id`, `channel`, URL permitida, versão crescente e integridade antes de instalar qualquer executável. Manifestos que anunciam `available: false` não devem ser tratados como atualização.
 
-1. Crie um token GitHub **fine-grained**, autorizado exclusivamente a ler o conteúdo dos repositórios privados de origem `planejador-de-cultos` e `lorde-agent` (`Contents: Read-only`).
-2. No repositório público, abra **Settings → Secrets and variables → Actions → New repository secret**. Cadastre `PRIVATE_RELEASE_READ_TOKEN`. **Nunca** salve ou publique esse token em arquivos, issues ou chats.
-3. Abra **Actions → Publicar instalador** e use **Run workflow**.
-4. Selecione `cultoflow`, `hub` ou `compras`; informe a tag exata da release privada, versão e canal `preview` ou `stable`.
-5. O pipeline buscará **somente o instalador binário** na release privada, calculará SHA-256 e tamanho, criará uma release pública e atualizará o manifesto do aplicativo correspondente.
+## Publicação automática
 
-O canal `stable` rejeita uma release de origem marcada como pré-release. A distribuição de versões de teste requer `preview` e não altera os manifestos estáveis.
+O GitHub Actions [**Procurar novas versões privadas**](.github/workflows/discover-updates.yml) consulta releases privadas a cada seis horas por aplicativo, usando o secret já configurado `PRIVATE_RELEASE_READ_TOKEN`, exclusivamente para leitura. Só gera um novo pedido quando identifica avanço de versão.
 
-### Versões de origem localizadas inicialmente
+O workflow [**Publicar instalador**](.github/workflows/publish-installer.yml) lê apenas o instalador binário da release privada, valida os checksums originais quando disponíveis, gera uma Release pública do produto/canal e atualiza o manifesto correspondente.
 
-- CultoFlow: release privada `agent-v0.5.2-build-34` (pré-release), `CultoFlowSetup.exe`.
-- Lorde Agent: release privada `v0.4.0rc20` (release candidate), `LordeAgentSetup-0.4.0rc20.exe`.
+Ambos têm [testes automatizados](.github/workflows/validate-manifests.yml). A publicação manual pelo workflow continua disponível para uma promoção controlada.
 
-Os instaladores **ainda não ficam públicos apenas com a criação deste repositório**: a primeira execução do workflow é necessária.
+**Regra de segurança:** versões rc/a/b/dev não entram no canal estável. O sistema não sobrescreve instaladores de versões já publicadas nem faz downgrade. Nunca publique tokens nem código privado neste repositório.
 
-## Como o atualizador deve consumir o manifesto
+## Atualizações dentro dos agentes
 
-1. Baixar o manifesto por HTTPS e confirmar `app_id` e `channel` exatos.
-2. Comparar a versão instalada com `version` sem fazer downgrade.
-3. Baixar o arquivo apenas do host `github.com` (página de release deste repositório), conferir `sha256` e `size_bytes`, e fazer verificação de assinatura quando houver certificado.
-4. Instalar somente quando não houver OS, impressão ou culto em execução; pedir confirmação do operador, preservar dados em AppData e registrar resultado.
-5. Após falha, oferecer recuperação/rollback para uma versão conhecida, sem baixar executáveis de URLs arbitrárias.
+- **CultoFlow Agent 0.5.3+:** verifica atualizações públicas automaticamente na inicialização e periodicamente. Quando existir versão superior, oferece instalação confirmada em um clique, com SHA-256 e bloqueio durante preparo de culto. Preserva as configurações do perfil Windows.
+- **Lorde Agent (Hub/Compras):** possui mecanismo independente de atualização assinada, mas a chave pública de confiança da instalação ainda precisa ser provisionada para ativar a atualização automática completa. **Até lá, use os downloads públicos oficiais e o instalador normal**, sem contornar a validação criptográfica.
 
-O manifesto sozinho **não habilita atualizações automáticas**: cada agente precisa implementar o consumo seguro desses dados.
+O GitHub pode avisar que o executável não é assinado por certificado Authenticode. SHA-256 comprova a correspondência com o manifesto, mas não substitui uma assinatura de código confiável.
 
-> O nome do repositório contém a grafia original `public-donwloads`. Os endereços publicados preservam exatamente essa grafia.
+> Nome real do repositório: `public-donwloads` (grafia preservada nos endereços).
