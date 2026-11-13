@@ -3,13 +3,13 @@
   "app_id": "hub",
   "channel": "preview",
   "available": true,
-  "version": "0.4.0rc20",
-  "release_tag": "hub-preview-v0.4.0rc20",
-  "published_at": "2026-11-09T09:19:34+00:00",
+  "version": "0.4.0rc23",
+  "release_tag": "hub-preview-v0.4.0rc23",
+  "published_at": "2026-11-13T20:27:50+00:00",
   "installer": {
-    "name": "LordeAgentSetup-0.4.0rc20.exe",
-    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/hub-preview-v0.4.0rc20/LordeAgentSetup-0.4.0rc20.exe",
-    "sha256": "bcf808ad01310b6f86da59738a0dcd64e4be16d782febf6e9a96813c34b35969",
-    "size_bytes": 99930280
+    "name": "LordeAgentSetup-0.4.0rc23.exe",
+    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/hub-preview-v0.4.0rc23/LordeAgentSetup-0.4.0rc23.exe",
+    "sha256": "5d54c598808bb68ab626738e56782f15f0931ac829a1756fe6922e7ecd3843f1",
+    "size_bytes": 73462764
   }
 }
