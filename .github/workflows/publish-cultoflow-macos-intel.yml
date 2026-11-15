@@ -1,0 +1,89 @@
+name: Publicar CultoFlow Agent macOS Intel
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-cultoflow-macos-intel.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-installers
+  cancel-in-progress: false
+
+jobs:
+  publish-macos-intel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Localizar build Intel privado concluído
+        env:
+          GH_TOKEN: ${{ secrets.PRIVATE_RELEASE_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$GH_TOKEN" ]]; then echo 'Falta PRIVATE_RELEASE_READ_TOKEN'; exit 1; fi
+          source_tag="$(gh release list -R pedrosamuelfeijao/planejador-de-cultos --json tagName --limit 100 --jq '.[].tagName' | grep -E '^agent-macos-intel-v0[.]5[.]9-build-[0-9]+$' | head -n 1 || true)"
+          if [[ -z "$source_tag" ]]; then echo 'Nenhum instalador macOS Intel 0.5.9 foi compilado'; exit 1; fi
+          echo "SOURCE_TAG=$source_tag" >> "$GITHUB_ENV"
+          echo 'PUBLIC_TAG=cultoflow-macos-intel-preview-v0.5.9' >> "$GITHUB_ENV"
+          echo "Build escolhido: $source_tag"
+
+      - name: Baixar e verificar artefatos originais
+        env:
+          GH_TOKEN: ${{ secrets.PRIVATE_RELEASE_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p source
+          gh release download "$SOURCE_TAG" -R pedrosamuelfeijao/planejador-de-cultos -D source -p 'CultoFlowAgent-macOS-Intel-x64-0.5.9.dmg' -p 'CultoFlowAgent-macOS-Intel-x64-0.5.9.zip' -p 'SHA256SUMS-macOS-Intel.txt'
+          test -s source/CultoFlowAgent-macOS-Intel-x64-0.5.9.dmg
+          test -s source/CultoFlowAgent-macOS-Intel-x64-0.5.9.zip
+          (cd source && sha256sum --check SHA256SUMS-macOS-Intel.txt)
+          file source/CultoFlowAgent-macOS-Intel-x64-0.5.9.dmg
+
+      - name: Publicar release pública sem código-fonte privado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$PUBLIC_TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Release pública já existe; preservando arquivos originais'
+            exit 1
+          fi
+          gh release create "$PUBLIC_TAG" source/CultoFlowAgent-macOS-Intel-x64-0.5.9.dmg source/CultoFlowAgent-macOS-Intel-x64-0.5.9.zip source/SHA256SUMS-macOS-Intel.txt -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title 'CultoFlow Agent 0.5.9 — macOS Intel x64' --notes 'Instalador macOS Intel x86_64 para Holyrics. Compilado em macOS Intel, assinado ad-hoc e não notarizado pela Apple. Teste antes do uso em culto.' --prerelease
+
+      - name: Criar manifesto de download macOS
+        env:
+          SOURCE_TAG: ${{ env.SOURCE_TAG }}
+          PUBLIC_TAG: ${{ env.PUBLIC_TAG }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          filename='CultoFlowAgent-macOS-Intel-x64-0.5.9.dmg'
+          path=Path('source')/filename
+          digest=hashlib.file_digest(path.open('rb'), 'sha256').hexdigest()
+          url=f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/releases/download/{os.environ['PUBLIC_TAG']}/{filename}"
+          target=Path('updates/cultoflow/macos-intel-preview.json')
+          target.parent.mkdir(parents=True,exist_ok=True)
+          data={'app_id':'cultoflow','channel':'macos-intel-preview','platform':'macos-intel-x64',
+                'available':True,'version':'0.5.9','source_tag':os.environ['SOURCE_TAG'],
+                'installer':{'url':url,'sha256':digest,'size':path.stat().st_size}}
+          target.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          print('Mac Intel manifest criado:',url)
+          PY
+
+      - name: Disponibilizar manifesto no GitHub público
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add updates/cultoflow/macos-intel-preview.json
+          git commit -m 'publish: CultoFlow Agent macOS Intel 0.5.9'
+          git push origin HEAD:main
