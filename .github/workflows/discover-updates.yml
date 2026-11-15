@@ -34,7 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
-            app=cultoflow  # CI smoke test of the detection path, no version bump needed
+            app=cultoflow  # Verifica nova versão do CultoFlow também após atualização deste workflow
           elif [[ -n "$REQUESTED" ]]; then
             app="$REQUESTED"
           else
