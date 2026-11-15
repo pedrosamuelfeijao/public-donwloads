@@ -3,11 +3,11 @@
   "channel": "macos-intel-preview",
   "platform": "macos-intel-x64",
   "available": true,
-  "version": "0.5.9",
-  "source_tag": "agent-macos-intel-v0.5.9-build-2",
+  "version": "0.5.11",
+  "source_tag": "agent-macos-intel-v0.5.11-build-6",
   "installer": {
-    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/cultoflow-macos-intel-preview-v0.5.9/CultoFlowAgent-macOS-Intel-x64-0.5.9.dmg",
-    "sha256": "8051dc9d43bbfef86525af2a0d5e8849aacfc7adbed0b3ee18d08b0a31fb0be8",
-    "size": 57276418
+    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/cultoflow-macos-intel-preview-v0.5.11/CultoFlowAgent-macOS-Intel-x64-0.5.11.dmg",
+    "sha256": "0f15c8082415adb3679a14bd1faf9d9ade2c1869e47f2594c27d8cc905b1d326",
+    "size": 56982531
   }
 }
