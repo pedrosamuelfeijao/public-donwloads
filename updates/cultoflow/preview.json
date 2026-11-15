@@ -3,13 +3,13 @@
   "app_id": "cultoflow",
   "channel": "preview",
   "available": true,
-  "version": "0.5.10",
-  "release_tag": "cultoflow-preview-v0.5.10",
-  "published_at": "2026-11-15T13:47:22+00:00",
+  "version": "0.5.11",
+  "release_tag": "cultoflow-preview-v0.5.11",
+  "published_at": "2026-11-15T14:02:45+00:00",
   "installer": {
-    "name": "CultoFlowSetup-0.5.10.exe",
-    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/cultoflow-preview-v0.5.10/CultoFlowSetup-0.5.10.exe",
-    "sha256": "ca9d044fa10d5465893aa4a250fa4e9b5d2cb8410ae14101b1b24fc047432143",
-    "size_bytes": 56856074
+    "name": "CultoFlowSetup-0.5.11.exe",
+    "url": "https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/cultoflow-preview-v0.5.11/CultoFlowSetup-0.5.11.exe",
+    "sha256": "7f37408e1f485f9cf574c483af876d147c2051fce3dd4fda9a791571b1b9e11e",
+    "size_bytes": 57183119
   }
 }
