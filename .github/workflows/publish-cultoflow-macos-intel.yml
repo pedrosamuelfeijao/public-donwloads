@@ -26,7 +26,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "$GH_TOKEN" ]]; then echo 'Falta PRIVATE_RELEASE_READ_TOKEN'; exit 1; fi
-          source_tag="$(gh release list -R pedrosamuelfeijao/planejador-de-cultos --json tagName --limit 100 --jq '.[].tagName' | grep -E '^agent-macos-intel-v0[.]5[.]9-build-[0-9]+$' | head -n 1 || true)"
+          source_tag="$(gh release list -R pedrosamuelfeijao/planejador-de-cultos --json tagName --limit 100 --jq '.[].tagName' | grep -E '^agent-macos-intel-v0[.]5[.]11-build-[0-9]+$' | head -n 1 || true)"
           if [[ -z "$source_tag" ]]; then echo 'Nenhum instalador macOS Intel 0.5.11 foi compilado'; exit 1; fi
           echo "SOURCE_TAG=$source_tag" >> "$GITHUB_ENV"
           echo 'PUBLIC_TAG=cultoflow-macos-intel-preview-v0.5.11' >> "$GITHUB_ENV"
