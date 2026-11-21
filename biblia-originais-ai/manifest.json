@@ -1,0 +1,544 @@
+{
+  "name": "biblia-originais-ai",
+  "version": "1.0.0",
+  "canon": "protestant-66",
+  "encoding": "UTF-8",
+  "schema": "markdown-one-verse-per-line",
+  "book_count": 66,
+  "corpus_files": 132,
+  "source_revisions": {
+    "midvash/bible-data": "9586bd8228a747962df1ee8692730422fb7eb2ec",
+    "Faithlife/SBLGNT": "d7f35adca9ec410e1d1499c63b4dd989d76c8d4d",
+    "openscriptures/morphhb": "db6c5c9b46b8f39346f10915ddb1a70dcd429901"
+  },
+  "books": [
+    {
+      "order": 1,
+      "osis": "Gen",
+      "name_pt": "Gênesis",
+      "original": "corpus/at/01-genesis.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/01-genesis.md"
+    },
+    {
+      "order": 2,
+      "osis": "Exod",
+      "name_pt": "Êxodo",
+      "original": "corpus/at/02-exodo.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/02-exodo.md"
+    },
+    {
+      "order": 3,
+      "osis": "Lev",
+      "name_pt": "Levítico",
+      "original": "corpus/at/03-levitico.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/03-levitico.md"
+    },
+    {
+      "order": 4,
+      "osis": "Num",
+      "name_pt": "Números",
+      "original": "corpus/at/04-numeros.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/04-numeros.md"
+    },
+    {
+      "order": 5,
+      "osis": "Deut",
+      "name_pt": "Deuteronômio",
+      "original": "corpus/at/05-deuteronomio.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/05-deuteronomio.md"
+    },
+    {
+      "order": 6,
+      "osis": "Josh",
+      "name_pt": "Josué",
+      "original": "corpus/at/06-josue.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/06-josue.md"
+    },
+    {
+      "order": 7,
+      "osis": "Judg",
+      "name_pt": "Juízes",
+      "original": "corpus/at/07-juizes.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/07-juizes.md"
+    },
+    {
+      "order": 8,
+      "osis": "Ruth",
+      "name_pt": "Rute",
+      "original": "corpus/at/08-rute.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/08-rute.md"
+    },
+    {
+      "order": 9,
+      "osis": "1Sam",
+      "name_pt": "1 Samuel",
+      "original": "corpus/at/09-1-samuel.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/09-1-samuel.md"
+    },
+    {
+      "order": 10,
+      "osis": "2Sam",
+      "name_pt": "2 Samuel",
+      "original": "corpus/at/10-2-samuel.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/10-2-samuel.md"
+    },
+    {
+      "order": 11,
+      "osis": "1Kgs",
+      "name_pt": "1 Reis",
+      "original": "corpus/at/11-1-reis.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/11-1-reis.md"
+    },
+    {
+      "order": 12,
+      "osis": "2Kgs",
+      "name_pt": "2 Reis",
+      "original": "corpus/at/12-2-reis.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/12-2-reis.md"
+    },
+    {
+      "order": 13,
+      "osis": "1Chr",
+      "name_pt": "1 Crônicas",
+      "original": "corpus/at/13-1-cronicas.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/13-1-cronicas.md"
+    },
+    {
+      "order": 14,
+      "osis": "2Chr",
+      "name_pt": "2 Crônicas",
+      "original": "corpus/at/14-2-cronicas.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/14-2-cronicas.md"
+    },
+    {
+      "order": 15,
+      "osis": "Ezra",
+      "name_pt": "Esdras",
+      "original": "corpus/at/15-esdras.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/15-esdras.md"
+    },
+    {
+      "order": 16,
+      "osis": "Neh",
+      "name_pt": "Neemias",
+      "original": "corpus/at/16-neemias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/16-neemias.md"
+    },
+    {
+      "order": 17,
+      "osis": "Esth",
+      "name_pt": "Ester",
+      "original": "corpus/at/17-ester.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/17-ester.md"
+    },
+    {
+      "order": 18,
+      "osis": "Job",
+      "name_pt": "Jó",
+      "original": "corpus/at/18-jo.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/18-jo.md"
+    },
+    {
+      "order": 19,
+      "osis": "Ps",
+      "name_pt": "Salmos",
+      "original": "corpus/at/19-salmos.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/19-salmos.md"
+    },
+    {
+      "order": 20,
+      "osis": "Prov",
+      "name_pt": "Provérbios",
+      "original": "corpus/at/20-proverbios.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/20-proverbios.md"
+    },
+    {
+      "order": 21,
+      "osis": "Eccl",
+      "name_pt": "Eclesiastes",
+      "original": "corpus/at/21-eclesiastes.md",
+      "original_edition": "OSHB-WLC",
+      "translation_pt": "corpus/pt/21-eclesiastes.md"
+    },
+    {
+      "order": 22,
+      "osis": "Song",
+      "name_pt": "Cântico dos Cânticos",
+      "original": "corpus/at/22-canticos.md",
+      "original_edition": "OSHB-WLC",
+      "translation_pt": "corpus/pt/22-canticos.md"
+    },
+    {
+      "order": 23,
+      "osis": "Isa",
+      "name_pt": "Isaías",
+      "original": "corpus/at/23-isaias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/23-isaias.md"
+    },
+    {
+      "order": 24,
+      "osis": "Jer",
+      "name_pt": "Jeremias",
+      "original": "corpus/at/24-jeremias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/24-jeremias.md"
+    },
+    {
+      "order": 25,
+      "osis": "Lam",
+      "name_pt": "Lamentações",
+      "original": "corpus/at/25-lamentacoes.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/25-lamentacoes.md"
+    },
+    {
+      "order": 26,
+      "osis": "Ezek",
+      "name_pt": "Ezequiel",
+      "original": "corpus/at/26-ezequiel.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/26-ezequiel.md"
+    },
+    {
+      "order": 27,
+      "osis": "Dan",
+      "name_pt": "Daniel",
+      "original": "corpus/at/27-daniel.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/27-daniel.md"
+    },
+    {
+      "order": 28,
+      "osis": "Hos",
+      "name_pt": "Oseias",
+      "original": "corpus/at/28-oseias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/28-oseias.md"
+    },
+    {
+      "order": 29,
+      "osis": "Joel",
+      "name_pt": "Joel",
+      "original": "corpus/at/29-joel.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/29-joel.md"
+    },
+    {
+      "order": 30,
+      "osis": "Amos",
+      "name_pt": "Amós",
+      "original": "corpus/at/30-amos.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/30-amos.md"
+    },
+    {
+      "order": 31,
+      "osis": "Obad",
+      "name_pt": "Obadias",
+      "original": "corpus/at/31-obadias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/31-obadias.md"
+    },
+    {
+      "order": 32,
+      "osis": "Jonah",
+      "name_pt": "Jonas",
+      "original": "corpus/at/32-jonas.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/32-jonas.md"
+    },
+    {
+      "order": 33,
+      "osis": "Mic",
+      "name_pt": "Miqueias",
+      "original": "corpus/at/33-miqueias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/33-miqueias.md"
+    },
+    {
+      "order": 34,
+      "osis": "Nah",
+      "name_pt": "Naum",
+      "original": "corpus/at/34-naum.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/34-naum.md"
+    },
+    {
+      "order": 35,
+      "osis": "Hab",
+      "name_pt": "Habacuque",
+      "original": "corpus/at/35-habacuque.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/35-habacuque.md"
+    },
+    {
+      "order": 36,
+      "osis": "Zeph",
+      "name_pt": "Sofonias",
+      "original": "corpus/at/36-sofonias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/36-sofonias.md"
+    },
+    {
+      "order": 37,
+      "osis": "Hag",
+      "name_pt": "Ageu",
+      "original": "corpus/at/37-ageu.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/37-ageu.md"
+    },
+    {
+      "order": 38,
+      "osis": "Zech",
+      "name_pt": "Zacarias",
+      "original": "corpus/at/38-zacarias.md",
+      "original_edition": "WLC",
+      "translation_pt": "corpus/pt/38-zacarias.md"
+    },
+    {
+      "order": 39,
+      "osis": "Mal",
+      "name_pt": "Malaquias",
+      "original": "corpus/at/39-malaquias.md",
+      "original_edition": "OSHB-WLC",
+      "translation_pt": "corpus/pt/39-malaquias.md"
+    },
+    {
+      "order": 40,
+      "osis": "Matt",
+      "name_pt": "Mateus",
+      "original": "corpus/nt/40-mateus.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/40-mateus.md"
+    },
+    {
+      "order": 41,
+      "osis": "Mark",
+      "name_pt": "Marcos",
+      "original": "corpus/nt/41-marcos.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/41-marcos.md"
+    },
+    {
+      "order": 42,
+      "osis": "Luke",
+      "name_pt": "Lucas",
+      "original": "corpus/nt/42-lucas.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/42-lucas.md"
+    },
+    {
+      "order": 43,
+      "osis": "John",
+      "name_pt": "João",
+      "original": "corpus/nt/43-joao.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/43-joao.md"
+    },
+    {
+      "order": 44,
+      "osis": "Acts",
+      "name_pt": "Atos",
+      "original": "corpus/nt/44-atos.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/44-atos.md"
+    },
+    {
+      "order": 45,
+      "osis": "Rom",
+      "name_pt": "Romanos",
+      "original": "corpus/nt/45-romanos.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/45-romanos.md"
+    },
+    {
+      "order": 46,
+      "osis": "1Cor",
+      "name_pt": "1 Coríntios",
+      "original": "corpus/nt/46-1-corintios.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/46-1-corintios.md"
+    },
+    {
+      "order": 47,
+      "osis": "2Cor",
+      "name_pt": "2 Coríntios",
+      "original": "corpus/nt/47-2-corintios.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/47-2-corintios.md"
+    },
+    {
+      "order": 48,
+      "osis": "Gal",
+      "name_pt": "Gálatas",
+      "original": "corpus/nt/48-galatas.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/48-galatas.md"
+    },
+    {
+      "order": 49,
+      "osis": "Eph",
+      "name_pt": "Efésios",
+      "original": "corpus/nt/49-efesios.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/49-efesios.md"
+    },
+    {
+      "order": 50,
+      "osis": "Phil",
+      "name_pt": "Filipenses",
+      "original": "corpus/nt/50-filipenses.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/50-filipenses.md"
+    },
+    {
+      "order": 51,
+      "osis": "Col",
+      "name_pt": "Colossenses",
+      "original": "corpus/nt/51-colossenses.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/51-colossenses.md"
+    },
+    {
+      "order": 52,
+      "osis": "1Thess",
+      "name_pt": "1 Tessalonicenses",
+      "original": "corpus/nt/52-1-tessalonicenses.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/52-1-tessalonicenses.md"
+    },
+    {
+      "order": 53,
+      "osis": "2Thess",
+      "name_pt": "2 Tessalonicenses",
+      "original": "corpus/nt/53-2-tessalonicenses.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/53-2-tessalonicenses.md"
+    },
+    {
+      "order": 54,
+      "osis": "1Tim",
+      "name_pt": "1 Timóteo",
+      "original": "corpus/nt/54-1-timoteo.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/54-1-timoteo.md"
+    },
+    {
+      "order": 55,
+      "osis": "2Tim",
+      "name_pt": "2 Timóteo",
+      "original": "corpus/nt/55-2-timoteo.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/55-2-timoteo.md"
+    },
+    {
+      "order": 56,
+      "osis": "Titus",
+      "name_pt": "Tito",
+      "original": "corpus/nt/56-tito.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/56-tito.md"
+    },
+    {
+      "order": 57,
+      "osis": "Phlm",
+      "name_pt": "Filemom",
+      "original": "corpus/nt/57-filemom.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/57-filemom.md"
+    },
+    {
+      "order": 58,
+      "osis": "Heb",
+      "name_pt": "Hebreus",
+      "original": "corpus/nt/58-hebreus.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/58-hebreus.md"
+    },
+    {
+      "order": 59,
+      "osis": "Jas",
+      "name_pt": "Tiago",
+      "original": "corpus/nt/59-tiago.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/59-tiago.md"
+    },
+    {
+      "order": 60,
+      "osis": "1Pet",
+      "name_pt": "1 Pedro",
+      "original": "corpus/nt/60-1-pedro.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/60-1-pedro.md"
+    },
+    {
+      "order": 61,
+      "osis": "2Pet",
+      "name_pt": "2 Pedro",
+      "original": "corpus/nt/61-2-pedro.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/61-2-pedro.md"
+    },
+    {
+      "order": 62,
+      "osis": "1John",
+      "name_pt": "1 João",
+      "original": "corpus/nt/62-1-joao.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/62-1-joao.md"
+    },
+    {
+      "order": 63,
+      "osis": "2John",
+      "name_pt": "2 João",
+      "original": "corpus/nt/63-2-joao.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/63-2-joao.md"
+    },
+    {
+      "order": 64,
+      "osis": "3John",
+      "name_pt": "3 João",
+      "original": "corpus/nt/64-3-joao.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/64-3-joao.md"
+    },
+    {
+      "order": 65,
+      "osis": "Jude",
+      "name_pt": "Judas",
+      "original": "corpus/nt/65-judas.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/65-judas.md"
+    },
+    {
+      "order": 66,
+      "osis": "Rev",
+      "name_pt": "Apocalipse",
+      "original": "corpus/nt/66-apocalipse.md",
+      "original_edition": "SBLGNT",
+      "translation_pt": "corpus/pt/66-apocalipse.md"
+    }
+  ]
+}
