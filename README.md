@@ -2,6 +2,8 @@
 
 Instaladores oficiais de Windows publicados **sem exigir login no GitHub**. Os repositórios com código-fonte, dados, segredos e pipelines de desenvolvimento continuam privados.
 
+**Lorde Agent — Windows, Mac Intel e Apple Silicon:** [confira o estado real dos builds de teste e as funções por plataforma](LORDE_AGENT_PREVIEW.md). Os recursos mais recentes ainda não estão incluídos nos instaladores anteriores.
+
 ## Baixar agora
 
 | Aplicativo | Download direto (canal de testes) | Versão | Tamanho |
