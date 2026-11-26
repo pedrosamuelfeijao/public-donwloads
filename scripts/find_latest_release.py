@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-from generate_manifest import sort_key
+from generate_manifest import sort_key, version_supported
 
 
 def newest(app: str, channel: str, published: list[dict], current: dict) -> tuple[str,str] | None:
@@ -33,6 +33,8 @@ def newest(app: str, channel: str, published: list[dict], current: dict) -> tupl
         if channel=="stable" and is_test:
             continue
         if channel=="preview" and not is_test:
+            continue
+        if not version_supported(app, version):
             continue
         key=sort_key(version)
         options.append((key,int(match.group(2)) if app=="cultoflow" else 0,tag,version))

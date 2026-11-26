@@ -8,7 +8,7 @@ Instaladores oficiais de Windows publicados **sem exigir login no GitHub**. Os r
 
 | Aplicativo | Download direto (canal de testes) | Versão | Tamanho |
 | --- | --- | --- | --- |
-| **Lorde Hub** | [Baixar Lorde Agent para Hub](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/hub-preview-v0.4.0rc20/LordeAgentSetup-0.4.0rc20.exe) | 0.4.0rc20 | ~100 MB |
+| **Lorde Hub** | [Estado do preview e versão disponível](LORDE_AGENT_PREVIEW.md) | Aguardando aceite do hotfix | — |
 | **Lorde Compras** | [Baixar Lorde Agent para Compras](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/compras-preview-v0.4.0rc20/LordeAgentSetup-0.4.0rc20.exe) | 0.4.0rc20 | ~100 MB |
 | **CultoFlow** | [Baixar CultoFlow Agent](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/cultoflow-preview-v0.5.3/CultoFlowSetup-0.5.3.exe) | 0.5.3 | ~46 MB |
 

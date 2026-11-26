@@ -4,16 +4,12 @@
 efetivamente disponíveis para baixar sem login. Novidades ainda em branch
 de desenvolvimento não são anunciadas como funcionalidades do instalador.
 
-## Download de teste já publicado
+## Disponibilidade do instalador para o Lorde Hub
 
-### Windows — Lorde Hub
-
-- Versão: **0.4.0rc23** (preview, publicada em 13/11/2026).
-- Instalar: [LordeAgentSetup-0.4.0rc23.exe](https://github.com/pedrosamuelfeijao/public-donwloads/releases/download/hub-preview-v0.4.0rc23/LordeAgentSetup-0.4.0rc23.exe)
-- [Manifesto de versão, integridade SHA-256 e tamanho](updates/hub/preview.json).
-- **Aviso:** este EXE é anterior à tabela expandida de 178 identificadores
-  e às 33 novas ilustrações de iPhone. Essas alterações ainda não foram
-  publicadas em um novo instalador Windows.
+As indicações de download Windows foram suspensas enquanto a correção de domínio
+passa pelo aceite. A versão mínima para o Hub é **0.4.0rc25**.
+O [manifesto preview](updates/hub/preview.json) voltará a indicar um instalador
+quando houver uma versão homologada para teste, com link e SHA-256.
 
 ### macOS Intel (x86_64) e Apple Silicon (arm64)
 

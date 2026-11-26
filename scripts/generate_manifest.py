@@ -24,6 +24,11 @@ def sort_key(version: str):
     # Stable is newer than any prerelease with the same numeric portion.
     return (*numbers, {"dev": 0, "a": 1, "b": 2, "rc": 3, "": 4}[suffix], int(match[3] or 0))
 
+
+def version_supported(app: str, version: str) -> bool:
+    return app != "hub" or sort_key(version) >= sort_key("0.4.0rc25")
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--app", choices=sorted(APPS), required=True)
@@ -37,6 +42,8 @@ def main():
         raise ValueError("Invalid version or tag")
     if a.channel == "stable" and re.search(r"(dev|a|b|rc)\d+$", a.version, re.I):
         raise ValueError("Release candidate cannot be stable")
+    if not version_supported(a.app, a.version):
+        raise ValueError("Lorde Hub exige a correção de domínio da rc25 ou superior")
     source = a.source_installer
     if not source.is_file() or source.stat().st_size < 1024 * 1024 or source.stat().st_size > 300 * 1024 * 1024:
         raise ValueError("Missing or invalid installer (1-300 MiB)")

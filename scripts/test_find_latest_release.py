@@ -16,12 +16,21 @@ class SelectionTests(unittest.TestCase):
     def test_rc_not_stable(self):
         releases=[
             {"tagName":"v0.4.0rc20","isPrerelease":True},
+            {"tagName":"v0.4.0rc25","isPrerelease":True},
             {"tagName":"v0.4.0","isPrerelease":False}
         ]
         self.assertEqual(newest("hub","preview",releases,{"available":False}),
-                         ("v0.4.0rc20","0.4.0rc20"))
+                         ("v0.4.0rc25","0.4.0rc25"))
         self.assertEqual(newest("compras","stable",releases,{"available":False}),
                          ("v0.4.0","0.4.0"))
+
+    def test_retired_hub_builds_cannot_be_selected(self):
+        releases = [{"tagName":"v0.4.0rc24","isPrerelease":True},
+                    {"tagName":"v0.3.7","isPrerelease":False}]
+        self.assertIsNone(newest("hub", "preview", releases, {"available":False}))
+        self.assertIsNone(newest("hub", "stable", releases, {"available":False}))
+        self.assertEqual(newest("compras", "preview", releases, {"available":False}),
+                         ("v0.4.0rc24", "0.4.0rc24"))
 
     def test_bad_tags_ignored(self):
         self.assertIsNone(newest("hub","preview",[{"tagName":"invalid","isPrerelease":True}],{"available":False}))
